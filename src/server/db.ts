@@ -10,9 +10,6 @@ export class Db {
       host: process.env.DB_HOST,
       port: Number(process.env.DB_PORT) ?? 5432,
       database: process.env.DB_NAME,
-      ssl: {
-        rejectUnauthorized: false,
-      },
     })
     this.pool = pool
   }
