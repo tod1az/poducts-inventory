@@ -19,7 +19,7 @@ export default function Form({ product }: { product: Product }) {
     >
       <input
         ref={inputRef}
-        className="text-black"
+        className="text-black px-2"
         name="quantity"
         type="number"
       />
