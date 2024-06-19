@@ -5,17 +5,18 @@ import Link from "next/link"
 
 type SearchParams = {
   q: string
+  page: string
 }
 
 export default function Home({ searchParams }: { searchParams: SearchParams }) {
   const userName = cookies().get("user")
-  const { q } = searchParams
+  const { q, page } = searchParams
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       {userName ? (
         <>
           <SearchBar />
-          <ProductsList query={q} />
+          <ProductsList query={q} page={page} />
         </>
       ) : (
         <section className="flex flex-col items-center justify-center">
