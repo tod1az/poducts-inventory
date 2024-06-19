@@ -6,7 +6,7 @@ export default function SubmitButton({
   children,
   className,
 }: {
-  className: string
+  className?: string
   children: React.ReactNode
 }) {
   const { pending } = useFormStatus()
