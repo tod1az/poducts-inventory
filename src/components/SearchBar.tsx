@@ -7,7 +7,7 @@ export default function SearchBar() {
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
   }
-
+  const searchParams = useSearchParams()
   const [query, setQuery] = useState<string>("")
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -16,7 +16,6 @@ export default function SearchBar() {
     setSearchParams(newValue)
   }
 
-  const searchParams = useSearchParams()
   const path = usePathname()
   const { replace } = useRouter()
 
@@ -26,9 +25,9 @@ export default function SearchBar() {
     if (query === "") {
       params.delete("q")
     }
+    params.set("page", "1")
     replace(`${path}?${params.toString()}`)
   }
-
   return (
     <form onSubmit={handleSubmit} className="flex gap-6 mb-10 ">
       <input
@@ -38,7 +37,6 @@ export default function SearchBar() {
         placeholder="Buscar..."
         className="px-2 text-black"
       />
-      <button type="button">{`=>`}</button>
     </form>
   )
 }
