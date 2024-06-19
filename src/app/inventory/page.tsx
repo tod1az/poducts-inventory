@@ -1,13 +1,22 @@
 import ProductsList from "@/components/ProductsList"
+import SearchBar from "@/components/SearchBar"
 import { cookies } from "next/headers"
 import Link from "next/link"
 
-export default function Home() {
+type SearchParams = {
+  q: string
+}
+
+export default function Home({ searchParams }: { searchParams: SearchParams }) {
   const userName = cookies().get("user")
+  const { q } = searchParams
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       {userName ? (
-        <ProductsList />
+        <>
+          <SearchBar />
+          <ProductsList query={q} />
+        </>
       ) : (
         <section className="flex flex-col items-center justify-center">
           <h1>Necesitas iniciar sesión para comenzar a contar</h1>
