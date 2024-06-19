@@ -23,10 +23,10 @@ export async function loadData() {
   const conn = await db.connect()
   try {
     for (const product of products) {
-      await conn.query("INSERT INTO PRODUCTS(ID, DESCRIPTION) VALUES($1,$2)", [
-        product.id,
-        product.description,
-      ])
+      await conn.query(
+        "INSERT INTO PRODUCTS(CODE, DESCRIPTION) VALUES($1,$2)",
+        [product.id, product.description]
+      )
     }
   } catch (error) {
     console.log(error)
