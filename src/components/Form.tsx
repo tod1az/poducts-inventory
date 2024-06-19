@@ -14,7 +14,7 @@ export default function Form({ product }: { product: Product }) {
           inputRef.current.value = ""
         }
         const quantity = formData.get("quantity")
-        await productAddition(Number(quantity), product.code)
+        await productAddition(Number(quantity), product.id)
       }}
     >
       <input
