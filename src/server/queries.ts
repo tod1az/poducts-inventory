@@ -2,16 +2,41 @@
 import { revalidatePath } from "next/cache"
 import { Db } from "./db"
 import { adaptProduct } from "./productsAdapters"
+import { createProductsQuery } from "./queryBuilder"
 
-export async function getProducts() {
+const perPage = 10
+
+type GetProductsParameters = {
+  description?: string
+  family?: string
+  page?: string
+}
+
+export async function getProducts({
+  description,
+  family,
+  page,
+}: GetProductsParameters) {
   const db = new Db()
   const conn = await db.connect()
 
-  const result = await conn.query("SELECT * FROM PRODUCTS")
-
-  conn.release()
-
-  return adaptProduct(result.rows)
+  try {
+    const { query: createdQuery, values } = createProductsQuery({
+      perPage,
+      description,
+      family,
+      page: page ? +page - 1 : undefined,
+    })
+    const { rows, rowCount } = await conn.query(createdQuery, values)
+    return {
+      rows: adaptProduct(rows),
+      totalPages: rowCount,
+    }
+  } catch (error) {
+    console.log(error)
+  } finally {
+    conn.release()
+  }
 }
 
 export async function productAddition(quantity: number, id: string) {
