@@ -4,7 +4,7 @@ import { Db } from "./db"
 import { adaptProduct } from "./productsAdapters"
 import { createProductsQuery } from "./queryBuilder"
 
-const perPage = 10
+const perPage = 20
 
 type GetProductsParameters = {
   description?: string
@@ -21,19 +21,27 @@ export async function getProducts({
   const conn = await db.connect()
 
   try {
-    const { query: createdQuery, values } = createProductsQuery({
+    const {
+      query: createdQuery,
+      values,
+      countValues,
+      countQuery,
+    } = createProductsQuery({
       perPage,
       description,
       family,
       page: page ? +page - 1 : undefined,
     })
-    const { rows, rowCount } = await conn.query(createdQuery, values)
+    const { rows } = await conn.query(createdQuery, values)
+    const res = await conn.query(countQuery, countValues)
+    const { count } = res.rows[0]
+
     return {
       rows: adaptProduct(rows),
-      totalPages: rowCount,
+      totalPages: Math.round(+count / perPage),
     }
   } catch (error) {
-    console.log(error)
+    console.error(error)
   } finally {
     conn.release()
   }

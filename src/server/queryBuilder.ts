@@ -13,20 +13,25 @@ export function createProductsQuery({
 }: CreateProductsQueryParameters) {
   const conditions: string[] = []
   const values: (string | number)[] = []
+  const countValues: (string | number)[] = []
 
   let query = `SELECT * FROM PRODUCTS`
+  let countQuery = `SELECT COUNT(*) FROM PRODUCTS`
 
   if (description) {
     conditions.push(`DESCRIPTION ILIKE $${values.length + 1}`)
     values.push(`%${description}%`)
+    countValues.push(`%${description}%`)
   }
   if (family) {
     conditions.push(`CODE = $${values.length + 1}`)
     values.push(family)
+    countValues.push(family)
   }
 
   if (conditions.length > 0) {
     query += ` WHERE ${conditions.join(" AND ")}`
+    countQuery += ` WHERE ${conditions.join(" AND ")}`
   }
   query += ` LIMIT $${values.length + 1}`
   values.push(perPage)
@@ -35,5 +40,5 @@ export function createProductsQuery({
     query += ` OFFSET $${values.length + 1}`
     values.push(page * perPage)
   }
-  return { query, values }
+  return { query, values, countQuery, countValues }
 }
