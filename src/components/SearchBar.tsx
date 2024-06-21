@@ -2,6 +2,7 @@
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { useState } from "react"
+import { Input } from "./ui/input"
 
 export default function SearchBar() {
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -30,7 +31,7 @@ export default function SearchBar() {
   }
   return (
     <form onSubmit={handleSubmit} className="flex gap-6 mb-10 ">
-      <input
+      <Input
         onChange={handleChange}
         type="text"
         value={query}
