@@ -33,6 +33,9 @@ export function createProductsQuery({
     query += ` WHERE ${conditions.join(" AND ")}`
     countQuery += ` WHERE ${conditions.join(" AND ")}`
   }
+
+  query += ` ORDER BY DESCRIPTION ASC`
+
   query += ` LIMIT $${values.length + 1}`
   values.push(perPage)
 
