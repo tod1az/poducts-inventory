@@ -9,10 +9,8 @@ export default async function ProductsList({
   page: string
 }) {
   const response = await getProducts({ description: query, page })
-
   if (response?.rows?.length === 0 || !response?.rows)
     return <h1>Sin resultados</h1>
-
   return (
     <section className="grid gap-2">
       {response.rows.map((product) => (
